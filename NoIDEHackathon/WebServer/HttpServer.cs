@@ -11,11 +11,11 @@ namespace WebServer
     class HttpServer
     {
         private readonly HttpListener listener;
-        private readonly Func<HttpListenerRequest, string> responderMethod;
+        private readonly Action<HttpListenerContext> responderMethod;
 
-        public bool Verbose { get; set; }
+        public bool Log { get; set; }
 
-        public HttpServer(string[] prefixes, Func<HttpListenerRequest, string> responderMethod)
+        public HttpServer(string[] prefixes, Action<HttpListenerContext> responderMethod)
         {
             if(prefixes == null || prefixes.Length == 0)
             {
@@ -42,47 +42,52 @@ namespace WebServer
             Task.Run(() =>
             {
                 listener.Start();
-                if (this.Verbose)
-                {
-                    Console.WriteLine("Webserver running...");
-                }
+                Output("Webserver running...");
 
                 try
                 {
                     Task listeningTask = null;
                     do
                     {
+                        if(listeningTask != null)
+                        {
+                            listeningTask.Wait();
+                            if (listeningTask.Exception != null)
+                            {
+                                Output("Closed");
+                                return;
+                            }
+                        }
+
                         listeningTask = Task.Run(() =>
                         {
-                            if (this.Verbose)
-                            {
-                                Console.WriteLine("New listening task");
-                            }
-                            HttpListenerContext context = listener.GetContext();
+                            Output("New listening task");
+                            
+                            HttpListenerContext context = null;
                             try
                             {
-                                string rstr = responderMethod(context.Request);
-                                byte[] buf = Encoding.UTF8.GetBytes(rstr);
-                                context.Response.ContentLength64 = buf.Length;
-                                context.Response.OutputStream.Write(buf, 0, buf.Length);
-                                if (this.Verbose)
-                                {
-                                    Console.WriteLine("Sent " + buf.Length + " bytes");
-                                }
+                                context = listener.GetContext();
+                                responderMethod(context);
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine("EXCEPTION: " + ex.Message);
+                                Output("EXCEPTION: " + ex.Message);
                             }
                             finally
                             {
                                 // always close the stream
-                                context.Response.OutputStream.Close();
+                                if (context != null)
+                                {
+                                    context.Response.OutputStream.Close();
+                                }
                             }
                         });
-                    } while (listener.IsListening && (listeningTask == null || listeningTask.IsCompleted));
+                    } while (listener.IsListening);
                 }
-                catch { } // suppress any exceptions
+                catch (Exception ex)
+                {
+                    Output("EXCEPTION: " + ex.Message);
+                }
 
                 Console.WriteLine("Server Closed");
             });
@@ -90,12 +95,17 @@ namespace WebServer
 
         public void Stop()
         {
-            if (this.Verbose)
-            {
-                Console.WriteLine("Server shutdown");
-            }
+            Output("Server shutdown");
+            
             listener.Stop();
-            listener.Close();
+        }
+
+        private void Output(string value)
+        {
+            if (Log)
+            {
+                Console.WriteLine(value);
+            }
         }
     }
 }

@@ -15,15 +15,16 @@ namespace WebServer
     public partial class ServerHostForm : Form
     {
         HttpServer server;
+        Router router;
+
         public ServerHostForm()
         {
             InitializeComponent();
-            Func<HttpListenerRequest, string> requestFunc = (HttpListenerRequest request) =>
-            {
-                return "<html><body><h1>HELLO WORLD</h1></body></html>";
-            };
-            server = new HttpServer(new string[] { "http://localhost/" }, requestFunc);
-            server.Verbose = true;
+            router = new Router();
+            Action<HttpListenerContext> requestFunc = router.Route;
+            string hostname = "http://" + Dns.GetHostName() + "/";
+            server = new HttpServer(new string[] { "http://localhost/", "https://localhost/", hostname }, requestFunc);
+            server.Log = true;
 
             Console.SetOut(new ControlWriter(outputTextbox, true));
         }
