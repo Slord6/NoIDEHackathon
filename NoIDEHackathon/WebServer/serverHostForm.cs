@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Net.WebSockets;
 using System.Net;
+using WebServer.RouterHandlers;
 
 namespace WebServer
 {
@@ -17,10 +18,26 @@ namespace WebServer
         HttpServer server;
         Router router;
 
+        private Dictionary<string, IRouteHandler> routing = new Dictionary<string, IRouteHandler> {
+            { "file", new FileGetHandler("No file found", Application.LocalUserAppDataPath) },
+            { "upload", new FilePutHandler("Failed to PUT file", Application.LocalUserAppDataPath) }
+        };
+
         public ServerHostForm()
         {
             InitializeComponent();
-            router = new Router();
+
+            //Enable output for routers
+            foreach (KeyValuePair<string,IRouteHandler> route in routing)
+            {
+                if (typeof(DefaultRouteHandler).IsAssignableFrom(route.Value.GetType()))
+                {
+                    DefaultRouteHandler tempHandler = (DefaultRouteHandler)route.Value;
+                    tempHandler.Log = true;
+                }
+            }
+
+            router = new Router(routing);
             Action<HttpListenerContext> requestFunc = router.Route;
             string hostname = "http://" + Dns.GetHostName() + "/";
             server = new HttpServer(new string[] { "http://localhost/", "https://localhost/", hostname }, requestFunc);
@@ -42,8 +59,9 @@ namespace WebServer
         {
             using (WebClient client = new WebClient())
             {
-                //Console.WriteLine("Testing with client:");
-                //outputTextbox.Text += client.DownloadString("http://localhost");
+                byte[] response = client.UploadData("http://localhost/upload/dir/uploadFile.txt", "PUT", System.IO.File.ReadAllBytes(@"C:\Users\samlo\AppData\Local\WebServer\WebServer\1.0.0.0\startText.txt"));
+                
+                Console.WriteLine("Test response = " + Encoding.UTF8.GetString(response));
             }
         }
 

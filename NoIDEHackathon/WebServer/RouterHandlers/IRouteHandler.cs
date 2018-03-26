@@ -5,10 +5,10 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 
-namespace WebServer
+namespace WebServer.RouterHandlers
 {
     interface IRouteHandler
     {
-        HttpListenerContext Process(HttpListenerContext context);
+        void Process(HttpListenerContext context);
     }
 }

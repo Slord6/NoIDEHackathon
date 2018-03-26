@@ -47,7 +47,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ControlWriter.cs" />
-    <Compile Include="IRouteHandler.cs" />
+    <Compile Include="RouterHandlers\DefaultGetHandler.cs" />
+    <Compile Include="RouterHandlers\FileGetHandler.cs" />
+    <Compile Include="RouterHandlers\FilePutHandler.cs" />
+    <Compile Include="RouterHandlers\IRouteHandler.cs" />
+    <Compile Include="MimeLookup.cs" />
     <Compile Include="Router.cs" />
     <Compile Include="ServerHostForm.cs">
       <SubType>Form</SubType>
