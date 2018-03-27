@@ -20,7 +20,8 @@ namespace WebServer
 
         private Dictionary<string, IRouteHandler> routing = new Dictionary<string, IRouteHandler> {
             { "file", new FileGetHandler("No file found", Application.LocalUserAppDataPath) },
-            { "upload", new FilePutHandler("Failed to PUT file", Application.LocalUserAppDataPath) }
+            { "upload", new FilePutHandler("Failed to PUT file", Application.LocalUserAppDataPath) },
+            { "chat", new ChatHandler("Unknown chat request") }
         };
 
         public ServerHostForm()

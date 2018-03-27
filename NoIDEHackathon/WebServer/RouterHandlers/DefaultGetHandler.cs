@@ -56,7 +56,8 @@ namespace WebServer.RouterHandlers
 
         protected string WrapAsHtml(string rawString)
         {
-            return "<html><body>" + rawString + "</body></html>";
+            string html = "<html><body>" + rawString + "</body></html>";
+            return html.Replace(Environment.NewLine, "</br>");
         }
     }
 }
