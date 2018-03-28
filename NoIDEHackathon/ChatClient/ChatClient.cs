@@ -31,19 +31,45 @@ namespace ChatClient
 
         public string CreateRoom(string roomName)
         {
-            return client.DownloadString(hostname + "/create/" + roomName);
+            return client.DownloadString(hostname + "/chat/create/" + roomName);
         }
 
         public string SendMessage(string contents)
         {
             client.DownloadString(hostname + "/chat/message/" + currentRoom + "/" + userName + "/" + contents);
 
-            return GetChat();
+            return GetChatRaw();
         }
 
-        public string GetChat()
+        public string GetChatRaw()
         {
-            return client.DownloadString(hostname + "/chat/room/" + currentRoom);
+            return Uri.UnescapeDataString(client.DownloadString(hostname + "/chat/room/" + currentRoom));
+        }
+
+        public string[] GetChat()
+        {
+            string rawChat = GetChatRaw().Replace("</br>",Environment.NewLine);
+            string[] messages = rawChat.Split('\n');
+
+            //Remove all html tags
+            string[] tags = { "body", "h1", "html" };
+            for(int i = 0; i< messages.Length; i++)
+            {
+                string messageLine = messages[i];
+                foreach (string tag in tags)
+                {
+                    string openTag = "<" + tag + ">";
+                    string endTag = "</" + tag + ">";
+
+                    messageLine = messageLine.Replace(openTag, " ");
+                    messageLine = messageLine.Replace(endTag, " ");
+                }
+                messages[i] = messageLine;
+            }
+
+            messages = messages.Where((x) => x != "\r" && !string.IsNullOrEmpty(x)).ToArray();
+
+            return messages;
         }
 
         public string GetRooms()

@@ -31,7 +31,7 @@
             this.activeRoomsComboBox = new System.Windows.Forms.ComboBox();
             this.roomLabel = new System.Windows.Forms.Label();
             this.chatWindowTextBox = new System.Windows.Forms.TextBox();
-            this.joinButton = new System.Windows.Forms.Button();
+            this.joinCreateButton = new System.Windows.Forms.Button();
             this.messageTextBox = new System.Windows.Forms.TextBox();
             this.sendButton = new System.Windows.Forms.Button();
             this.hostLabel = new System.Windows.Forms.Label();
@@ -39,6 +39,7 @@
             this.connectButton = new System.Windows.Forms.Button();
             this.usernameTextBox = new System.Windows.Forms.TextBox();
             this.usernameLabel = new System.Windows.Forms.Label();
+            this.refreshRoomsButton = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // activeRoomsComboBox
@@ -66,32 +67,32 @@
             this.chatWindowTextBox.Location = new System.Drawing.Point(12, 164);
             this.chatWindowTextBox.Multiline = true;
             this.chatWindowTextBox.Name = "chatWindowTextBox";
-            this.chatWindowTextBox.Size = new System.Drawing.Size(307, 390);
+            this.chatWindowTextBox.Size = new System.Drawing.Size(461, 267);
             this.chatWindowTextBox.TabIndex = 7;
             // 
-            // joinButton
+            // joinCreateButton
             // 
-            this.joinButton.Location = new System.Drawing.Point(139, 135);
-            this.joinButton.Name = "joinButton";
-            this.joinButton.Size = new System.Drawing.Size(75, 23);
-            this.joinButton.TabIndex = 4;
-            this.joinButton.Text = "Join";
-            this.joinButton.UseVisualStyleBackColor = true;
-            this.joinButton.Click += new System.EventHandler(this.joinButton_Click);
+            this.joinCreateButton.Location = new System.Drawing.Point(139, 135);
+            this.joinCreateButton.Name = "joinCreateButton";
+            this.joinCreateButton.Size = new System.Drawing.Size(75, 23);
+            this.joinCreateButton.TabIndex = 4;
+            this.joinCreateButton.Text = "Join/Create";
+            this.joinCreateButton.UseVisualStyleBackColor = true;
+            this.joinCreateButton.Click += new System.EventHandler(this.joinButton_Click);
             // 
             // messageTextBox
             // 
             this.messageTextBox.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.messageTextBox.Location = new System.Drawing.Point(12, 562);
+            this.messageTextBox.Location = new System.Drawing.Point(12, 439);
             this.messageTextBox.Name = "messageTextBox";
-            this.messageTextBox.Size = new System.Drawing.Size(225, 20);
+            this.messageTextBox.Size = new System.Drawing.Size(379, 20);
             this.messageTextBox.TabIndex = 5;
             // 
             // sendButton
             // 
             this.sendButton.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-            this.sendButton.Location = new System.Drawing.Point(244, 560);
+            this.sendButton.Location = new System.Drawing.Point(398, 437);
             this.sendButton.Name = "sendButton";
             this.sendButton.Size = new System.Drawing.Size(75, 23);
             this.sendButton.TabIndex = 6;
@@ -141,12 +142,23 @@
             this.usernameLabel.TabIndex = 10;
             this.usernameLabel.Text = "Username:";
             // 
+            // refreshRoomsButton
+            // 
+            this.refreshRoomsButton.Location = new System.Drawing.Point(220, 135);
+            this.refreshRoomsButton.Name = "refreshRoomsButton";
+            this.refreshRoomsButton.Size = new System.Drawing.Size(75, 23);
+            this.refreshRoomsButton.TabIndex = 11;
+            this.refreshRoomsButton.Text = "Refresh";
+            this.refreshRoomsButton.UseVisualStyleBackColor = true;
+            this.refreshRoomsButton.Click += new System.EventHandler(this.refreshRoomsButton_Click);
+            // 
             // ChatForm
             // 
             this.AcceptButton = this.sendButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(331, 594);
+            this.ClientSize = new System.Drawing.Size(485, 471);
+            this.Controls.Add(this.refreshRoomsButton);
             this.Controls.Add(this.usernameLabel);
             this.Controls.Add(this.usernameTextBox);
             this.Controls.Add(this.connectButton);
@@ -154,7 +166,7 @@
             this.Controls.Add(this.hostLabel);
             this.Controls.Add(this.sendButton);
             this.Controls.Add(this.messageTextBox);
-            this.Controls.Add(this.joinButton);
+            this.Controls.Add(this.joinCreateButton);
             this.Controls.Add(this.chatWindowTextBox);
             this.Controls.Add(this.roomLabel);
             this.Controls.Add(this.activeRoomsComboBox);
@@ -170,7 +182,7 @@
         private System.Windows.Forms.ComboBox activeRoomsComboBox;
         private System.Windows.Forms.Label roomLabel;
         private System.Windows.Forms.TextBox chatWindowTextBox;
-        private System.Windows.Forms.Button joinButton;
+        private System.Windows.Forms.Button joinCreateButton;
         private System.Windows.Forms.TextBox messageTextBox;
         private System.Windows.Forms.Button sendButton;
         private System.Windows.Forms.Label hostLabel;
@@ -178,6 +190,7 @@
         private System.Windows.Forms.Button connectButton;
         private System.Windows.Forms.TextBox usernameTextBox;
         private System.Windows.Forms.Label usernameLabel;
+        private System.Windows.Forms.Button refreshRoomsButton;
     }
 }
 
