@@ -32,6 +32,7 @@ If working as a group, everyone at the end of the hackathon must be running ever
 - Video Player
 - Email client
 - Servers - HTTP, FTP, SMTP, POP, etc
+- Nice long [list](https://github.com/danistefanovic/build-your-own-x) of make-your-own X in various languages
 
 **Hard modes:**
 - Write each piece of software in a different language!
